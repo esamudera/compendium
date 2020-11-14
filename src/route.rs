@@ -1,8 +1,11 @@
 use actix_web::{web, middleware, App, HttpResponse};
 
+use super::playbook;
+
 fn config_api_playbook(cfg: &mut web::ServiceConfig) {
     cfg.service(
-        web::resource("/new_entry").route(web::post().to(|| HttpResponse::Ok()))
+        web::resource("/new_entry")
+        .route(web::post().to(playbook::handle_new_playbook))
     );
 }
 

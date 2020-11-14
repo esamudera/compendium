@@ -1,6 +1,7 @@
 use actix_web::{web, App, HttpRequest, HttpServer, Responder};
 
 mod route;
+mod playbook;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
