@@ -1,5 +1,7 @@
-use actix_web::{HttpRequest, HttpResponse};
+use actix_web::{HttpRequest, HttpResponse, error, Result};
+use super::database;
 
-pub async fn handle_new_playbook(req: HttpRequest) -> HttpResponse {
-    HttpResponse::NoContent().finish()
+pub async fn handle_new_playbook(req: HttpRequest) -> Result<&'static str> {
+    database::get_connection()?;
+    Ok("coba")
 }
