@@ -1,8 +1,12 @@
+extern crate diesel;
+extern crate dotenv;
+
 use actix_web::{web, App, HttpRequest, HttpServer, Responder};
 
 mod route;
 mod playbook;
 mod error;
+mod database;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
