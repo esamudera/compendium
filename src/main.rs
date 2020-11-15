@@ -2,7 +2,6 @@ use actix_web::{web, App, HttpRequest, HttpServer, Responder};
 
 mod route;
 mod playbook;
-mod database;
 mod error;
 
 #[actix_web::main]
