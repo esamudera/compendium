@@ -1,3 +1,5 @@
+#[macro_use]
+
 extern crate diesel;
 extern crate dotenv;
 
@@ -7,6 +9,7 @@ mod route;
 mod playbook;
 mod error;
 mod database;
+mod schema;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
