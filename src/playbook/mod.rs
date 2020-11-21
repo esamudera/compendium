@@ -1,26 +1,45 @@
 mod model;
 
-use actix_web::{HttpRequest, HttpResponse, error, Result};
+use actix_web::{web, http, HttpRequest, HttpResponse, Result};
+use chrono::{Utc};
+use serde::Deserialize;
 use model::playbook::NewPlaybook;
 use diesel::prelude::*;
 
 use crate::database;
+use crate::error::UserFacingError;
 use crate::schema::playbook;
 
-pub async fn handle_new_playbook(req: HttpRequest) -> Result<&'static str> {
+#[derive(Deserialize)]
+pub struct NewPlaybookRequest {
+    title: String
+}
 
-    let connection = database::establish_connection().unwrap();
+pub async fn handle_new_playbook(
+    req: web::Json<NewPlaybookRequest>
+) -> Result<HttpResponse> {
+
+    let connection = database::establish_connection()
+        .map_err(|_e| UserFacingError::InternalError)?;
 
     let new_playbook = NewPlaybook {
-        title: String::from("coba"),
-        create_time: 1,
-        update_time: 1
+        title: clean(&req.title),
+        create_time: Utc::now().timestamp(),
+        update_time: Utc::now().timestamp()
     };
 
     diesel::insert_into(playbook::table)
         .values(&new_playbook)
         .execute(&connection)
-        .expect("Error saving new playbook");
+        .map_err(|_e| UserFacingError::InternalError)?;
 
-    Ok("coba")
+    Ok(
+        HttpResponse::Created()
+            .header(http::header::LOCATION, "/api/playbook/latest")
+            .finish()
+    )
+}
+
+fn clean(title: &String) -> String {
+    return String::from(title.trim())
 }
