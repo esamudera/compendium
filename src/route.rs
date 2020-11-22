@@ -3,9 +3,14 @@ use actix_web::{web, middleware, App, HttpResponse};
 use super::playbook;
 
 fn config_api_playbook(cfg: &mut web::ServiceConfig) {
-    cfg.service(
+    cfg
+    .service(
         web::resource("/new_entry")
         .route(web::post().to(playbook::handle_new_playbook))
+    )
+    .service(
+        web::resource("/list")
+        .route(web::get().to(playbook::list::handle))
     );
 }
 

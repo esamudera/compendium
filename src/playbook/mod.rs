@@ -10,6 +10,8 @@ use crate::database;
 use crate::error::UserFacingError;
 use crate::schema::playbook;
 
+pub mod list;
+
 #[derive(Deserialize)]
 pub struct NewPlaybookRequest {
     title: String
