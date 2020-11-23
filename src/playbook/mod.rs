@@ -9,6 +9,7 @@ use diesel::prelude::*;
 use crate::database;
 use crate::error::UserFacingError;
 use crate::schema::playbook;
+use crate::shared::input;
 
 pub mod list;
 
@@ -25,7 +26,7 @@ pub async fn handle_new_playbook(
         .map_err(|_e| UserFacingError::InternalError)?;
 
     let new_playbook = NewPlaybook {
-        title: clean(&req.title),
+        title: input::clean(&req.title),
         create_time: Utc::now().timestamp(),
         update_time: Utc::now().timestamp()
     };
@@ -40,8 +41,4 @@ pub async fn handle_new_playbook(
             .header(http::header::LOCATION, "/api/playbook/latest")
             .finish()
     )
-}
-
-fn clean(title: &String) -> String {
-    return String::from(title.trim())
 }

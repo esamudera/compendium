@@ -10,6 +10,7 @@ mod playbook;
 mod error;
 mod database;
 mod schema;
+mod shared;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
