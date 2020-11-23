@@ -1,4 +1,4 @@
-use actix_web::{web, middleware, App, HttpResponse};
+use actix_web::{web};
 
 use super::playbook;
 
@@ -6,7 +6,7 @@ fn config_api_playbook(cfg: &mut web::ServiceConfig) {
     cfg
     .service(
         web::resource("/new_entry")
-        .route(web::post().to(playbook::handle_new_playbook))
+        .route(web::post().to(playbook::create::handle))
     )
     .service(
         web::resource("/list")
