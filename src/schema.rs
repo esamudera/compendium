@@ -1,8 +1,8 @@
 table! {
     playbook (id) {
         id -> Nullable<Integer>,
-        title -> Nullable<Text>,
-        create_time -> Nullable<BigInt>,
-        update_time -> Nullable<BigInt>,
+        title -> Text,
+        create_time -> Integer,
+        update_time -> Integer,
     }
 }
