@@ -27,10 +27,10 @@ pub async fn handle(
         update_time: Utc::now().timestamp()
     };
 
-    diesel::insert_into(playbook::table)
-        .values(&new_playbook)
-        .execute(&connection)
-        .map_err(|_e| UserFacingError::InternalError)?;
+    // diesel::insert_into(playbook::table)
+        // .values(&new_playbook)
+        // .execute(&connection)
+        // .map_err(|_e| UserFacingError::InternalError)?;
 
     Ok(
         HttpResponse::Created()
