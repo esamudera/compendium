@@ -2,6 +2,8 @@ use actix_web::{web, http, HttpRequest, HttpResponse, Result};
 use serde::Deserialize;
 
 use std::fmt::Debug;
+use crate::playbook::dao;
+use crate::error::UserFacingError;
 
 #[derive(Deserialize)]
 pub struct QueryParams {
@@ -10,29 +12,27 @@ pub struct QueryParams {
     limit: Option<i32>
 }
 
-#[derive(Debug)]
-enum SortOrder {
-    Ascending,
-    Descending
-}
-
 pub async fn handle(query: web::Query<QueryParams>) -> Result<HttpResponse> {
-    let input_sort_by = query.sort_by.as_deref().unwrap_or("create_time");
-    let input_order = query.order.as_deref().unwrap_or("desc");
     let input_limit : i32 = query.limit.unwrap_or(10);
 
-    let order = enumify_order(input_order);
+    let sort_by = match query.sort_by.as_deref() {
+        Some("id") => "id",
+        Some("create_time") => "create_time",
+        Some("update_time") => "update_time",
+        _ => "id"
+    };
+
+    let order = match query.order.as_deref() {
+        Some("desc") => "desc",
+        Some("asc") => "asc",
+        _ => "desc"
+    };
+
+    let playbook_list = dao::get_playbook_list(input_limit, &sort_by, &order)
+        .map_err(|_e| UserFacingError::InternalError)?;
 
     Ok(
         HttpResponse::Ok()
-            .body(format!("BANG! {} {:?} {}", input_sort_by, order, input_limit))
+            .json(playbook_list)
     )
-}
-
-fn enumify_order(input_order: &str) -> SortOrder {
-    return match input_order {
-        "asc" => SortOrder::Ascending,
-        "desc" => SortOrder::Descending,
-        _ => SortOrder::Descending
-    };
 }
