@@ -3,7 +3,7 @@
 extern crate diesel;
 extern crate dotenv;
 
-use actix_web::{web, App, HttpRequest, HttpServer, Responder};
+use actix_web::{App, HttpServer};
 
 mod route;
 mod playbook;

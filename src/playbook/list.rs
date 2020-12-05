@@ -1,7 +1,6 @@
-use actix_web::{web, http, HttpRequest, HttpResponse, Result};
+use actix_web::{web, HttpResponse, Result};
 use serde::Deserialize;
 
-use std::fmt::Debug;
 use crate::playbook::dao;
 use crate::error::UserFacingError;
 

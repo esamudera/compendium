@@ -1,12 +1,11 @@
 use dotenv;
-use super::error::UserFacingError;
 
 use rusqlite::Connection;
+use std::error::Error;
 
-pub fn get_connection() -> Result<Connection, UserFacingError> {
+pub fn get_connection() -> Result<Connection, Box<dyn Error>> {
     let db_url = dotenv::var("DATABASE_URL")
         .expect("DATABASE_URL is not set in env");
-    
-    return Connection::open(db_url)
-        .map_err(|_e| UserFacingError::InternalError)
+    let conn = Connection::open(db_url)?;
+    Ok(conn)
 }
