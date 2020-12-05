@@ -11,6 +11,10 @@ fn config_api_playbook(cfg: &mut web::ServiceConfig) {
     .service(
         web::resource("/list")
         .route(web::get().to(playbook::list::handle))
+    )
+    .service(
+        web::resource("/{id}")
+        .route(web::delete().to(playbook::delete::handle))
     );
 }
 

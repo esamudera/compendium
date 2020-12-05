@@ -52,3 +52,13 @@ pub fn get_playbook_list(limit: i32, sort: &str, sort_order: &str) -> Result<Vec
 
     Ok(playbooks)
 }
+
+pub fn delete_playbook(id: i64) -> Result<(), Box<dyn Error>> {
+    let connection = database::get_connection()?;
+    connection
+        .execute(
+            "DELETE FROM playbook WHERE id = ?1",
+            params![id]
+        )?;
+    Ok(())
+}
